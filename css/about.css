@@ -1,0 +1,110 @@
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    margin:0;
+    padding: 0;
+    line-height: 1.5;
+    color: rgb(44, 91, 101) !important;
+  }  
+  .about-page {
+    max-width: 1140px;
+    margin: 10px 10px;
+    padding: 20px 0 50PX !important;
+    background: #fff;
+    box-shadow: 0 4px 20px rgb(44, 91, 101);
+    border-radius: 10px;
+  }
+
+  .main-title {
+    font-size: 40px;
+    color: rgb(44, 91, 101);
+  }
+  
+  .section-title {
+    color: rgb(44, 91, 101);
+    font-size: 20px;
+  }
+  
+  .mission-box p {
+    background-color: rgba(40, 85, 96, 0.86);
+    color: white;
+    border: 2px solid rgb(87, 145, 167); 
+    border-radius: 10px;
+    padding: 15px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  blockquote {
+    border: 1px solid rgba(40, 85, 96, 0.7);
+    border-left-width: 10px;
+    border-bottom-width: 10px;
+    background-color: rgba(202, 244, 255, 0.38);
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 22px;
+    color: #285560;
+    
+  }
+  
+  .team-section {
+    text-align: center;
+    background-color: rgb(30, 85, 97);
+    padding: 20px 0;
+  }
+  
+  .team-title {
+    font-size: 40px;
+    color: white;
+  }
+  
+  .team-members {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  
+  .member-card {
+    background-color: rgb(224, 249, 255);
+    border-radius: 10px;
+    padding: 20px;
+    width: 320px;
+    color: rgb(30, 85, 97);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .member-card img {
+    width: 100%;
+    border-radius: 12px;
+  }
+  
+  .contact-list li {
+    font-size: 18px;
+    line-height: 1.8;
+  }
+  
+  hr {
+    border: none;
+    height: 5px !important;
+    background-color: rgba(60, 133, 149, 0.31);
+    align-content: center !important;
+    /* text-align: center !important;
+    display: flex !important;
+    justify-content: center !important; */
+  }
+  
+  .back-home-btn {
+    background-color: rgb(65, 151, 171);
+    color: white !important;
+    border: 1px solid rgb(49, 111, 125);
+  }
+  
+  .back-home-btn:hover, .back-home-btn:focus {
+    background-color: rgb(28, 98, 114) !important;
+    color: white !important;
+  }
+  
