@@ -9,7 +9,7 @@
             FROM sanpham s 
             JOIN DanhMuc dm ON s.MaDM = dm.MaDM
             JOIN NhomDanhMuc ndm ON s.MaNDM = ndm.MaNDM
-            ORDER BY MaSP
+            ORDER BY TenSP
             LIMIT $offset, $size";
     $result = mysqli_query($conn, $sql);
 
@@ -21,20 +21,21 @@
 <div class="thongtin">
     <h2 class="text-center mb-5"><b>DANH SÁCH SẢN PHẨM</b></h2>
     <hr>
-    <h3><a href="SP_them.php" style="font-style: italic; text-decoration: underline;color: #fb3d78; ">Thêm sản phẩm mới</a></h3>
+    <h3><a href="SP_them.php" style="font-style: italic; text-decoration: underline;color: rgb(255, 119, 23) ">Thêm sản phẩm mới</a></h3>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th class="text-center" style="width:100px;">Mã SP</th>
-                <th class="text-center" style="width:200px;">Tên SP</th>
-                <th class="text-center" style="width:150px;">Ảnh Bìa</th>
-                <th class="text-center" style="width:100px;">Số lượng</th>
-                <th class="text-center" style="width:150px;">Giá bán</th>
-                <th class="text-center" style="width:150px;">Màu sắc</th>
-                <th class="text-center" style="width:150px;">Nhóm</th>
-                <th class="text-center" style="width:150px;">Danh mục</th>
-                <th class="text-center" style="width:150px;">Bảo hành</th>
-                <th class="text-center" style="width:100px;">Hành động</th>
+                <th class="text-center" style="width:1%;">Mã SP</th>
+                <th class="text-center" style="width:5%;">Tên SP</th>
+                <th class="text-center" style="width:10%;">Ảnh Bìa</th>
+                <th class="text-center" style="width:20%;">Mô tả</th>
+                <th class="text-center" style="width:5%;">Số lượng</th>
+                <th class="text-center" style="width:5%;">Giá bán</th>
+                <th class="text-center" style="width:5%;">Màu sắc</th>
+                <th class="text-center" style="width:5%;">Nhóm</th>
+                <th class="text-center" style="width:5%;">Danh mục</th>
+                <th class="text-center" style="width:5%;">Bảo hành</th>
+                <th class="text-center" style="width:5%;">Hành động</th>
             </tr>
         </thead>
         <tbody style="background-color:white; color: rgb(0, 94, 116)">
@@ -48,6 +49,8 @@
                 <td class="text-center">
                     <img src="../Images/<?= $row['AnhBia'] ?>" style="width:130px; height:150px; padding:0;">
                 </td>
+                <!-- Mô tả -->
+                <td><?= mb_strimwidth($row['MoTa'], 0, 50, '...') ?></td>
                 <!-- số lượng -->
                 <td class="text-center"><?= $row['SoLuong'] ?></td>
                 <!-- màu sắc -->

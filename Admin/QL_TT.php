@@ -30,7 +30,7 @@ $fieldNames = [
 $fields = array_keys($fieldNames);
 ?>
 <div class="thongtin">
-    <h2 class="text-center mb-4"><b>THÔNG TIN DOANH NGHIỆP</b></h2> <hr>
+<h2 class="text-center mb-4"><b>THÔNG TIN DOANH NGHIỆP</b></h2> <hr>
     <table >
         <thead>
             <tr style="background-color: rgb(0, 94, 116); color: white;">
@@ -47,9 +47,9 @@ $fields = array_keys($fieldNames);
             <?php } ?>
         </tbody>
     </table> <br>
-    <div class="text-center mt-3">
-        <a href="TT_sua.php?id=<?= htmlspecialchars($id) ?>&field=<?= htmlspecialchars($field) ?>" class="btn-luu" style='text-align: center'><i class="fas fa-edit"></i>&ensp;<b>THAY ĐỔI THÔNG TIN</b></a>
-    </div>
+</div>
+<div class="text-center mt-3">
+    <a href="TT_sua.php?id=<?= htmlspecialchars($id) ?>&field=<?= htmlspecialchars($field) ?>" class="btn-luu" style='text-align: center'><i class="fas fa-edit"></i>&ensp;<b>THAY ĐỔI THÔNG TIN</b></a>
 </div>
 
 <?php

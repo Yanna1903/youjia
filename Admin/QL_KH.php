@@ -16,7 +16,7 @@
 <div class="thongtin"  >
     <h2 class="text-center mb-4"><b>DANH SÁCH KHÁCH HÀNG</b></h2>
     <hr>
-    <h3><a href="KH_them.php" style="font-style: italic; text-decoration: underline;color: #fb3d78; ">Thêm khách hàng mới</a></h3>
+    <h3><a href="KH_them.php" style="font-style: italic; text-decoration: underline;color: rgb(255, 119, 23); ">Thêm khách hàng mới</a></h3>
     <?php if (mysqli_num_rows($result) > 0) { ?>
     <table class="table table-striped table-bordered">
         <thead>

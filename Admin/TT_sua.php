@@ -72,8 +72,8 @@ $row = $result->fetch_assoc();
 </style> -->
 </head>
 <body>
+<h2 class="text-center mb-4"><b>CẬP NHẬT THÔNG TIN</b></h2> <hr>
 <div class="thongtin">
-    <h2 class="text-center mb-4"><b>CẬP NHẬT THÔNG TIN</b></h2> <br> <hr>
     <form method="post">
         <table>
             <thead>
@@ -104,10 +104,10 @@ $row = $result->fetch_assoc();
         </table>
     </form>
     <br>
-    <div class="text-center mt-3" style="text-align:center;">
-        <button type="submit" class="btn-luu"><b>LƯU</b></button>
-    </div>
 </div>
+<div class="text-center mt-3" style="text-align:center;">
+        <button type="submit" class="btn-luu"><b><i class="fas fa-save"></i> &ensp;LƯU THAY ĐỔI</b></button>
+    </div>
 </body>
 </html>
 <?php

@@ -2,6 +2,7 @@
 ob_start();
 include '../includes/youjia_connect.php';
 
+// Lấy danh mục cần sửa
 if (isset($_GET['id'])) {
     $MaDM = intval($_GET['id']);
 
@@ -13,16 +14,23 @@ if (isset($_GET['id'])) {
 
     if ($result && $dm = mysqli_fetch_assoc($result)) {
         $TenDM = $dm['TenDM'];
+        $MaNDM = $dm['MaNDM'] ?? '';
     } else {
         echo "<div class='alert alert-danger'>Không tìm thấy danh mục!</div>";
         exit;
     }
 }
 
+// Lấy danh sách nhóm danh mục
+$sql_ndm = "SELECT MaNDM, TenNDM FROM NhomDanhMuc";
+$result_ndm = mysqli_query($conn, $sql_ndm);
+
+// Xử lý POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = [];
     $MaDM = $_POST['MaDM'] ?? '';
     $TenDM = $_POST['TenDM'] ?? '';
+    $MaNDM = $_POST['MaNDM'] ?? '';
 
     if (empty($MaDM)) {
         $errors['MaDM'] = "Mã danh mục không hợp lệ.";
@@ -30,11 +38,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($TenDM)) {
         $errors['TenDM'] = "Tên danh mục không được để trống.";
     }
+    if (empty($MaNDM)) {
+        $errors['MaNDM'] = "Mã nhóm danh mục không được để trống.";
+    }
 
     if (empty($errors)) {
-        $sql = "UPDATE DanhMuc SET TenDM = ? WHERE MaDM=?";
+        $sql = "UPDATE DanhMuc SET TenDM = ?, MaNDM = ? WHERE MaDM=?";
         $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "si", $TenDM, $MaDM);
+        mysqli_stmt_bind_param($stmt, "ssi", $TenDM, $MaNDM, $MaDM);
         $result = mysqli_stmt_execute($stmt);
 
         if ($result) {
@@ -50,38 +61,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<div class="container">
-    <h2 class="text-center mt-4"><b>SỬA DANH MỤC</b></h2>
-    <hr />
-    <form class="form-horizontal" method="POST" action="">
+<h2 class="text-center mt-4"><b>CẬP NHẬT DANH MỤC</b></h2>
+<hr style="width:50%;">
+
+<div class="thongtin">
+    <form method="POST" class="form-container">
         <input type="hidden" name="MaDM" value="<?= htmlspecialchars($MaDM ?? '') ?>">
-        <!-- Tên Danh Mục -->
-        <div class="form-group row">
-            <label class="control-label col-md-2">Tên Danh Mục</label>
-            <div class="col-md-10">
-                <input type="text" name="TenDM" class="form-control" 
-                    value="<?= htmlspecialchars($TenDM ?? '') ?>">
-                <span class="text-danger"><?= $errors['TenDM'] ?? '' ?></span>
-            </div>
-        </div>       
-        <!-- nút lưu -->
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="LƯU" class="btn-luu">
+
+        <div class="form-group">
+            <label for="TenDM" class="form-label">Tên DM</label>
+            <input type="text" name="TenDM" id="TenDM" class="form-control" value="<?= htmlspecialchars($TenDM ?? '') ?>">
+            <span class="text-danger"><?= $errors['TenDM'] ?? '' ?></span>
+        </div>
+
+        <div class="form-group">
+            <label for="MaNDM" class="form-label">Nhóm DM</label>
+            <select name="MaNDM" id="MaNDM" class="form-control">
+                <option value="">-- Chọn nhóm danh mục --</option>
+                <?php while($row = mysqli_fetch_assoc($result_ndm)): ?>
+                    <option value="<?= $row['MaNDM'] ?>"
+                        <?= ($row['MaNDM'] == $MaNDM) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($row['TenNDM']) ?>
+                    </option>
+                <?php endwhile; ?>
+            </select>
+            <span class="text-danger"><?= $errors['MaNDM'] ?? '' ?></span>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn-luu"><b><i class="fas fa-save"></i> &ensp;LƯU THAY ĐỔI</b></button>
+            <a href="QL_DM.php" class="btn-th"><b>TRỞ VỀ</b></a>
         </div>
     </form>
-    
-    <h3>
-        <a href="QL_DM.php" class="btn-th" style="font-style: italic;">Trở về</a>
-    </h3>
 </div>
-
-<?php 
-    $content = ob_get_clean();
-    include 'Layout_AD.php'; 
+<?php
+$content = ob_get_clean();
+include 'Layout_AD.php';
 ?>
-<link rel="stylesheet" href="AD_css.css">
 <style>
     .btn-th, .btn-luu{
-        width: 45% !important;
+        width: 49%;
     }
 </style>

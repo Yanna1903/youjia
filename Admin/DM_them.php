@@ -29,153 +29,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
-<div class="container mt5">
-    <h2 class="text-center mt-4"><b>THÊM DANH MỤC MỚI</b></h2>
-    <hr>
-    <form method="POST">
-        <div class="form-group row">
-            <label class="control-label col-md-2">Tên Danh Mục</label>
-            <div class="col-md-10">
-                <input type="text" name="TenDM" class="form-control" value="<?= htmlspecialchars($TenDM ?? '') ?>" />
-                <span class="text-danger"><?= $errors['TenDM'] ?? '' ?></span>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="control-label col-md-2" for="MaNDM">Nhóm Danh Mục:</label>
-            <div class="col-md-10"> 
-                <select name="MaNDM" id="MaNDM" class="form-control" required>
-                    <option value="">-- Chọn nhóm danh mục --</option>
-                    <?php
-                    $sql_ndm = "SELECT * FROM nhomdanhmuc";
-                    $result_ndm = mysqli_query($conn, $sql_ndm);
-                    while ($row_ndm = mysqli_fetch_assoc($result_ndm)) {
-                        echo '<option value="' . $row_ndm['MaNDM'] . '">' . $row_ndm['TenNDM'] . '</option>';
-                    }
-                    ?>
-                </select>
-            </div> 
+<h2><B> THÊM DANH MỤC MỚI <B></H2><HR>
+<div class="thongtin">
+    <form method="POST" class="form-container" style="background:#f9f9f9; border-radius:12px;">
+        <div class="form-group">
+            <label class="form-label">Tên DM</label>
+            <input type="text" name="TenDM" class="form-control" value="<?= htmlspecialchars($TenDM ?? '') ?>" />
+            <span class="text-danger"><?= $errors['TenDM'] ?? '' ?></span>
         </div>
 
-        <div class="form-group row text-center">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="LƯU" class="btn btn-luu">
-            </div>
+        <div class="form-group">
+            <label for="MaNDM" class="form-label">Nhóm DM</label>
+            <select name="MaNDM" id="MaNDM" class="form-control" required>
+                <option value="">-- Chọn nhóm danh mục --</option>
+                <?php
+                $sql_ndm = "SELECT * FROM nhomdanhmuc";
+                $result_ndm = mysqli_query($conn, $sql_ndm);
+                while ($row_ndm = mysqli_fetch_assoc($result_ndm)) {
+                    echo '<option value="' . $row_ndm['MaNDM'] . '">' . htmlspecialchars($row_ndm['TenNDM']) . '</option>';
+                }
+                ?>
+            </select>
+            <span class="text-danger"><?= $errors['MaNDM'] ?? '' ?></span>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn-luu"><b><i class="fas fa-save"></i> &ensp;LƯU</b></button>
+            <a href="QL_DM.php" class="btn-th"><b>TRỞ VỀ</b></a>
         </div>
     </form>
-
-    <h2>
-        <a href="QL_DM.php" style='color: rgb(237, 79, 134); font-style: italic;'>Trở về</a>
-    </h2>
 </div>
-
 <?php
 $content = ob_get_clean();
 include 'Layout_AD.php';
 ?>
 <style>
-    body {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        text-decoration: none;
-        list-style: none;
+    .btn-th, .btn-luu{
+        width: 49%;
     }
-
-    label {
-        align: left !important;
-    }
-    hr {
-        border: 0;
-        height: 5px !important;
-        background-color: rgba(0, 95, 116, 0.44);
-        margin-top: 20px;
-        margin-bottom: 20px;
-        width: 80%;
-    }
-
-    table {
-        border-collapse: collapse;
-        width: auto;
-        margin: 20px auto;
-        background-color: rgb(255, 212, 231);
-        padding: 50px 100px;
-        border-radius: 15px;
-        box-shadow: 4px 4px rgba(0, 95, 116, 0.44);
-        border: 2px solid rgb(0, 95, 116);
-        line-height: 1.8;
-    }
-
-    h2 {
-        font-size: 30px !important;
-        color: rgb(0, 94, 116) !important;
-    }
-
-    label {
-        color: rgb(0, 94, 116) !important;
-        font-size: 18px !important;
-        line-height: 1.8;
-    }
-
-    .btn-luu {
-        color: #fff;
-        padding: 6px 10px;
-        font-size: 12px;
-        font-weight: bold;
-        border: 2px solid transparent;
-        cursor: pointer;
-        text-transform: uppercase;
-        background-color:rgb(0, 123, 150) !important;
-        margin: 0px;
-        width:100%;
-    }
-
-    .btn-luu:hover {
-        background-color:rgb(0, 94, 116) !important;
-        color: #fff !important;
-    }
-
-    /* Style chung cho input, select */
-    input[type="text"],
-    input[type="number"],
-    select,
-    textarea {
-        width: 100%;
-        height: 40px;
-        padding: 8px;
-        border: 1px solid rgba(0, 95, 116, 0.4) !important;
-        border-radius: 10px;
-        outline: none;
-        background-color: #fff;
-        transition: border-color 0.3s, box-shadow 0.3s;
-        font-size: 16px;
-        line-height: 1.5;
-    }
-
-    input[type="text"]:focus,
-    input[type="number"]:focus,
-    select:focus,
-    textarea:focus {
-        border-color: rgb(0, 94, 116) !important;
-        box-shadow: 0 0 5px rgba(0, 94, 116, 0.5) !important;
-        outline: none;
-    }
-
-    input[type="submit"] {
-        width: 100%;
-        height: 40px;
-        padding: 8px 8px;
-        background-color: rgb(0, 94, 116);
-        color: white;
-        font-weight: bold;
-        font-size: 20px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        text-align: center;
-    }
-
-    input[type="submit"]:hover {
-        background-color:rgb(0, 94, 116);
-    }
+</style>

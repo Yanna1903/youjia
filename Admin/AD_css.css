@@ -74,7 +74,7 @@ hr {
     margin-bottom: 20px;
     width: 100% !important;
 }
-h2 {
+h2 , h3 {
     font-size: 30px !important;
     color: rgb(0, 94, 116) !important;
 }
@@ -86,10 +86,12 @@ h2 {
     background: rgb(0,123,150);
     color: #fff;
     text-align: center;
-    border-radius: 12px;
-    margin: 5px !important; 
+    border-radius: 12px !important;
+    margin: 0; 
     transition: 0.3s;
-    padding:0;
+    padding:0 !important;
+    border: 0;
+    font-size: 16px;
 }
 .btn-th:hover, .btn-th:focus  {
     background: rgb(0,94,116) !important;
@@ -183,7 +185,7 @@ table tbody tr:hover {
     border-color: 5px solid rgb(18, 61, 71) !important;
     cursor: default;
 }
-input[type="text"],
+input, input[type="text"],
 input[type="number"],
 select, textarea  {
     width: 100%;
@@ -241,27 +243,55 @@ input[type="submit"]:hover {
 }
 /* trang thông tin */
 .thongtin table {
-    width: 100% !important;
+    width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
-    font-size: 16px;
-    color: rgb(0, 94, 116);
-    text-align: left !important;
 }
 
-.thongtin table th, 
+.thongtin table th,
 .thongtin table td {
     border: 1px solid rgba(0,123,150,0.3);
     padding: 10px 12px;
 }
-.thongtin table th {
-    background-color: rgba(0, 123, 150, 0.15);
-    padding:5px;
+
+.thongtin table th:first-child,
+.thongtin table td:first-child {
+    width: 180px;
+    white-space: nowrap; /* không bị xuống dòng */
 }
-.thongtin table td {
-   text-align: left;
+/* form */
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    color: rgb(0, 94, 116);
 }
-.thongtin table tr:hover {
-    background-color: rgba(0, 123, 150, 0.1);
+.form-group label {
+    /* padding-left: 20px; */
+    flex: 0 0 15%;  /* label chiếm 35% ngang */
+    margin-right: 15px;
+    font-weight: bold;
+    color: rgb(0,94,116);
+    text-align: left; /* canh trái */
 }
 
+.form-group input,
+.form-group select,
+.form-group textarea {
+    flex: 1; /* ăn hết phần còn lại */
+}
+/* Nút lưu & trở về nằm ngang */
+.button-group {
+    display: flex;
+    gap: 20px;
+}
+
+.button-group input.btn-luu,
+.button-group a.btn-th {
+    flex: 1;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+}

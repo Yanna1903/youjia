@@ -18,16 +18,16 @@
 <div class="thongtin">
     <h2 class="text-center mb-4"><b>DANH SÁCH DANH MỤC</b></h2>
     <hr>
-    <h3><a href="DM_them.php" style="font-style: italic; text-decoration: underline;color: #fb3d78; ">Thêm danh mục mới</a></h3>
+    <h3><a href="DM_them.php" style="font-style: italic; text-decoration: underline;color:rgb(255, 119, 23)">Thêm danh mục mới</a></h3>
 
     <?php if (mysqli_num_rows($result) > 0) { ?>
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
-                <th class="text-center" style="width: 50px;height: 30px;">Mã Danh mục</th>
-                <th class="text-center" style="width:150px;height: 30px;">Tên Danh mục</th>
-                <th class="text-center" style="width:100px;height: 30px;">Nhóm Danh mục</th>
-                <th class="text-center" style="width:100px;height: 30px;">Hành động</th>
+                <th class="text-center" style="width: 20%;height: 30px;">Mã Danh mục</th>
+                <th class="text-center" style="width: 30%;height: 30px;">Tên Danh mục</th>
+                <th class="text-center" style="width: 30%;height: 30px;">Nhóm Danh mục</th>
+                <th class="text-center" style="width: 20%;height: 30px;">Hành động</th>
             </tr>
         </thead>
         <tbody>

@@ -2,174 +2,128 @@
 ob_start();
 include '../includes/youjia_connect.php';
 
-// Kiểm tra MaSP
-if (!isset($_GET['MaSP'])) {
-    die("Không tìm thấy Mã SP.");
-}
-$MaSP = $_GET['MaSP'];
+$MaSP = isset($_GET['MaSP']) ? mysqli_real_escape_string($conn, $_GET['MaSP']) : null;
+if (!$MaSP) die("Không tìm thấy Mã SP.");
 
 // Lấy thông tin sản phẩm
 $sql_sp = "SELECT * FROM SanPham WHERE MaSP = '$MaSP'";
 $result_sp = mysqli_query($conn, $sql_sp);
-if (!$result_sp || mysqli_num_rows($result_sp) == 0) {
-    die("Không tìm thấy sản phẩm với Mã SP: $MaSP");
-}
+if (!$result_sp || mysqli_num_rows($result_sp) == 0) die("Không tìm thấy sản phẩm với Mã SP: $MaSP");
 $sp = mysqli_fetch_assoc($result_sp);
 
-// Cập nhật sản phẩm
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['capnhat'])) {
-    $TenSP = $_POST['TenSP'];
-    $MauSac = $_POST['MauSac'];
-    $GiaBan = $_POST['GiaBan'];
-    $SoLuong = $_POST['SoLuong'];
-    $BaoHanh = $_POST['BaoHanh'];
+// Lấy nhóm danh mục để đổ select
+$result_ndm = mysqli_query($conn, "SELECT * FROM NhomDanhMuc");
 
-    $sql_update = "UPDATE SanPham 
-                   SET TenSP='$TenSP', MauSac='$MauSac', GiaBan='$GiaBan', SoLuong='$SoLuong', BaoHanh='$BaoHanh' 
+// Lấy danh mục theo nhóm đã chọn
+$MaNDM = $sp['MaNDM'];
+$result_dm = mysqli_query($conn, "SELECT * FROM DanhMuc WHERE MaNDM='$MaNDM'");
+
+// Cập nhật thông tin
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $TenSP   = mysqli_real_escape_string($conn, $_POST['TenSP']);
+    $MoTa    = mysqli_real_escape_string($conn, $_POST['MoTa']);
+    $MauSac  = mysqli_real_escape_string($conn, $_POST['MauSac']);
+    $GiaBan  = (float)$_POST['GiaBan'];
+    $SoLuong = (int)$_POST['SoLuong'];
+    $BaoHanh = (int)$_POST['BaoHanh'];
+    $MaNDM   = (int)$_POST['MaNDM'];
+    $MaDM    = (int)$_POST['MaDM'];
+    $TrangThai = isset($_POST['TrangThai']) ? 1 : 0;
+
+    // XỬ LÝ ẢNH
+    $AnhBia = $sp['AnhBia'];
+    if (!empty($_FILES['AnhBia']['name'])) {
+        $file_name = uniqid() . "_" . basename($_FILES["AnhBia"]["name"]);
+        $target_dir = "../images/";
+        $target_file = $target_dir . $file_name;
+        if (move_uploaded_file($_FILES["AnhBia"]["tmp_name"], $target_file)) {
+            if (!empty($AnhBia) && file_exists($target_dir.$AnhBia)) unlink($target_dir.$AnhBia);
+            $AnhBia = $file_name;
+        }
+    }
+
+    $sql_update = "UPDATE SanPham SET TenSP='$TenSP', MoTa='$MoTa', MauSac='$MauSac', GiaBan='$GiaBan', 
+                   SoLuong='$SoLuong', BaoHanh='$BaoHanh', MaNDM='$MaNDM', MaDM='$MaDM', TrangThai='$TrangThai', AnhBia='$AnhBia'
                    WHERE MaSP='$MaSP'";
     if (mysqli_query($conn, $sql_update)) {
-        echo "<script>alert('Cập nhật sản phẩm thành công'); window.location.href='SP_sua.php?MaSP=$MaSP';</script>";
+        echo "<script>alert('Cập nhật sản phẩm thành công'); window.location.href='QL_SP.php';</script>";
     } else {
         echo "Lỗi: " . mysqli_error($conn);
     }
 }
-
-// Cập nhật ảnh bìa
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['capnhat_bia'])) {
-    if ($_FILES['AnhBia']['name']) {
-        $file_name = basename($_FILES["AnhBia"]["name"]);
-        $target_dir = "../images/";
-        $target_file = $target_dir . $file_name;
-        if (move_uploaded_file($_FILES["AnhBia"]["tmp_name"], $target_file)) {
-            $sql_update_bia = "UPDATE SanPham SET AnhBia='$file_name' WHERE MaSP='$MaSP'";
-            mysqli_query($conn, $sql_update_bia);
-            echo "<script>alert('Cập nhật ảnh bìa thành công'); window.location.href='SP_sua.php?MaSP=$MaSP';</script>";
-        } else {
-            echo "Lỗi upload ảnh bìa.";
-        }
-    }
-}
-
-// Thêm hình chi tiết
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['them_hinh'])) {
-    if ($_FILES['AnhSP']['name']) {
-        $file_name = basename($_FILES["AnhSP"]["name"]);
-        $target_dir = "../images/";
-        $target_file = $target_dir . $file_name;
-        if (move_uploaded_file($_FILES["AnhSP"]["tmp_name"], $target_file)) {
-            $sql_insert_img = "INSERT INTO HinhAnh (AnhSP, MaSP) VALUES ('$file_name', '$MaSP')";
-            mysqli_query($conn, $sql_insert_img);
-            echo "<script>alert('Thêm hình chi tiết thành công'); window.location.href='SP_sua.php?MaSP=$MaSP';</script>";
-        } else {
-            echo "Lỗi upload file.";
-        }
-    }
-}
-
-// Xóa hình chi tiết
-if (isset($_GET['delete_img'])) {
-    $id = $_GET['delete_img'];
-    $sql_get_img = "SELECT AnhSP FROM HinhAnh WHERE MaHinh='$id'";
-    $res_img = mysqli_query($conn, $sql_get_img);
-    if ($row = mysqli_fetch_assoc($res_img)) {
-        $file_path = "../images/".$row['AnhSP'];
-        if (file_exists($file_path)) unlink($file_path);
-    }
-    mysqli_query($conn, "DELETE FROM HinhAnh WHERE MaHinh='$id'");
-    echo "<script>alert('Đã xóa hình'); window.location.href='SP_sua.php?MaSP=$MaSP';</script>";
-}
-
-// Lấy danh sách hình chi tiết
-$sql_img = "SELECT * FROM HinhAnh WHERE MaSP = '$MaSP'";
-$result_img = mysqli_query($conn, $sql_img);
 ?>
-<link rel="stylesheet" href="AD_css.css">
 
+<h2 class="text-center mt-4"><b>CẬP NHẬT SẢN PHẨM</b></h2><hr>
 <div class="thongtin">
-    <h2 class="text-center mb-4"><b>CẬP NHẬT SẢN PHẨM</b></h2>
-    <hr style="width: 100%">
-    <form method="post" class="form-horizontal">
-        <div class="form-group row justify-content-center">
-            <label class="col-md-3 col-form-label text-md-right">Mã SP</label>
-            <div class="col-md-7">
-                <input type="text" class="form-control mx-auto" value="<?= htmlspecialchars($sp['MaSP']) ?>" readonly>
+    <form method="POST" enctype="multipart/form-data" class="form-container" style="background:#f9f9f9; border-radius:12px;">
+        <div class="form-group"><label>Mã SP</label><input type="text" value="<?= htmlspecialchars($sp['MaSP']) ?>" readonly></div>
+        <div class="form-group"><label>Tên SP</label><input type="text" name="TenSP" value="<?= htmlspecialchars($sp['TenSP']) ?>"></div>
+        <div class="form-group"><label>Ảnh Bìa</label><input type="file" name="AnhBia"></div>
+        <div class="form-group"><label>Giá Bán</label><input type="number" name="GiaBan" value="<?= htmlspecialchars($sp['GiaBan']) ?>"></div>
+        <div class="form-group"><label>Mô Tả</label><textarea name="MoTa"><?= htmlspecialchars($sp['MoTa']) ?></textarea></div>
+
+        <div class="form-group">
+            <label>Nhóm Danh Mục</label>
+            <select name="MaNDM" id="MaNDM" required>
+                <option value="">-- Chọn nhóm danh mục --</option>
+                <?php while($ndm = mysqli_fetch_assoc($result_ndm)): ?>
+                    <option value="<?= $ndm['MaNDM'] ?>" <?= ($ndm['MaNDM']==$sp['MaNDM'])?'selected':'' ?>>
+                        <?= htmlspecialchars($ndm['TenNDM']) ?>
+                    </option>
+                <?php endwhile; ?>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Danh Mục</label>
+            <select name="MaDM" id="MaDM" required>
+                <option value="">-- Chọn danh mục --</option>
+                <?php while($dm = mysqli_fetch_assoc($result_dm)): ?>
+                    <option value="<?= $dm['MaDM'] ?>" <?= ($dm['MaDM']==$sp['MaDM'])?'selected':'' ?>>
+                        <?= htmlspecialchars($dm['TenDM']) ?>
+                    </option>
+                <?php endwhile; ?>
+            </select>
+        </div>
+
+        <div class="form-group"><label>Số Lượng</label><input type="number" name="SoLuong" value="<?= htmlspecialchars($sp['SoLuong']) ?>"></div>
+        <div class="form-group"><label>Màu Sắc</label><input type="text" name="MauSac" value="<?= htmlspecialchars($sp['MauSac']) ?>"></div>
+        <div class="form-group"><label>Bảo Hành (tháng)</label><input type="number" name="BaoHanh" value="<?= htmlspecialchars($sp['BaoHanh']) ?>"></div>
+
+        <div class="form-group">
+            <label>Trạng Thái</label>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <input type="checkbox" name="TrangThai" <?= $sp['TrangThai'] ? 'checked' : '' ?>><span style="font-size:13px;">(Còn hàng)</span>
             </div>
         </div>
-        <div class="form-group row justify-content-center">
-            <label class="col-md-3 col-form-label text-md-right">Tên SP</label>
-            <div class="col-md-7">
-                <input type="text" name="TenSP" class="form-control mx-auto" value="<?= htmlspecialchars($sp['TenSP']) ?>">
-            </div>
-        </div>
-        <div class="form-group row justify-content-center">
-            <label class="col-md-3 col-form-label text-md-right">Màu sắc</label>
-            <div class="col-md-7">
-                <input type="text" name="MauSac" class="form-control mx-auto" value="<?= htmlspecialchars($sp['MauSac']) ?>">
-            </div>
-        </div>
-        <div class="form-group row justify-content-center">
-            <label class="col-md-3 col-form-label text-md-right">Giá bán</label>
-            <div class="col-md-7">
-                <input type="number" name="GiaBan" class="form-control mx-auto" value="<?= htmlspecialchars($sp['GiaBan']) ?>">
-            </div>
-        </div>
-        <div class="form-group row justify-content-center">
-            <label class="col-md-3 col-form-label text-md-right">Số lượng</label>
-            <div class="col-md-7">
-                <input type="number" name="SoLuong" class="form-control mx-auto" value="<?= htmlspecialchars($sp['SoLuong']) ?>">
-            </div>
-        </div>
-        <div class="form-group row justify-content-center">
-            <label class="col-md-3 col-form-label text-md-right">Bảo hành</label>
-            <div class="col-md-7">
-                <input type="number" name="BaoHanh" class="form-control mx-auto" value="<?= htmlspecialchars($sp['BaoHanh']) ?>">
-            </div>
-        </div>
-        <div class="text-center mt-4">
-            <button type="submit" name="capnhat" class="btn-th">
-                <i class="fas fa-save"></i> Lưu thay đổi
-            </button>
+
+        <div class="button-group">
+            <button type="submit" name="capnhat" class="btn-luu"><b><i class="fas fa-save"></i>&ensp;LƯU THAY ĐỔI</b></button>
+            <a href="QL_SP.php" class="btn-th"><b>TRỞ VỀ</b></a>
         </div>
     </form>
 </div>
 
-<hr>
-<h2 class="text-center mb-3"><b>ẢNH BÌA SẢN PHẨM</b></h2>
-<div class="text-center mb-3">
-    <?php if (!empty($sp['AnhBia'])): ?>
-        <img src="../images/<?= htmlspecialchars($sp['AnhBia']) ?>" style="height:180px;">
-    <?php else: ?>
-        <p>Chưa có ảnh bìa.</p>
-    <?php endif; ?>
-</div>
-<form method="post" enctype="multipart/form-data" class="text-center mb-4">
-    <input type="file" name="AnhBia" class="form-control" style="width:300px; display:inline-block;">
-    <button type="submit" name="capnhat_bia" class="btn-th mt-2">Cập nhật ảnh bìa</button>
-</form>
-
-<hr>
-<h2 class="text-center mb-3"><b>HÌNH ẢNH CHI TIẾT SẢN PHẨM</b></h2>
-<form method="post" enctype="multipart/form-data" class="text-center mb-4">
-    <input type="file" name="AnhSP" class="form-control" style="width:300px; display:inline-block;">
-    <button type="submit" name="them_hinh" class="btn-th mt-2">Thêm hình chi tiết</button>
-</form>
-<div class="img-gallery text-center">
-    <?php if(mysqli_num_rows($result_img) > 0): ?>
-        <?php while($row_img = mysqli_fetch_assoc($result_img)): ?>
-            <div style="display:inline-block; margin:10px;">
-                <img src="../images/<?= htmlspecialchars($row_img['AnhSP']) ?>" alt="Hình SP" style="height:120px;">
-                <br>
-                <a href="SP_sua.php?MaSP=<?= $MaSP ?>&delete_img=<?= $row_img['MaHinh'] ?>" 
-                   onclick="return confirm('Bạn có chắc muốn xóa hình này?');"
-                   class="btn btn-danger btn-sm mt-2">Xóa</a>
-            </div>
-        <?php endwhile; ?>
-    <?php else: ?>
-        <p>Chưa có hình ảnh nào cho sản phẩm này.</p>
-    <?php endif; ?>
-</div>
+<script>
+document.getElementById('MaNDM').addEventListener('change', function() {
+    var maNDM = this.value;
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'lay_danhmuc.php?MaNDM=' + maNDM, true);
+    xhr.onload = function () {
+        if (this.status == 200) {
+            document.getElementById('MaDM').innerHTML = this.responseText;
+        }
+    };
+    xhr.send();
+});
+</script>
 
 <?php
 $content = ob_get_clean();
 include 'Layout_AD.php';
 ?>
+<style>
+    .btn-th, .btn-luu{
+        width: 49%;
+    }
+</style>

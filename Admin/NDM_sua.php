@@ -33,31 +33,32 @@
 
     $conn->close();
 ?>
+<h2 class="text-center mt-4"><b>CẬP NHẬT NHÓM DANH MỤC</b></h2>
+<hr style="width:50%;">
 
-<div class="container">
-    <br>
-    <h2 class="text-center"><b>CẬP NHẬT NHÓM DANH MỤC</b></h2>
-    <hr>
-    <form action="NDM_sua.php?id=<?= $brand['MaNDM'] ?>" method="POST">
-        <!-- TÊN th -->
-        <div class="form-group row">
-            <label class="control-label col-md-2">Tên nhóm DM</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="TenNDM" value="<?= $brand['TenNDM'] ?>" required>
-            </div>
+<div class="thongtin">
+    <form method="POST" class="form-container" style="background:#f9f9f9; border-radius:12px;">
+        <input type="hidden" name="MaDM" value="<?= htmlspecialchars($MaDM ?? '') ?>">
+
+        <div class="form-group">
+            <label for="TenDM" class="form-label">Tên NDM</label>
+            <input type="text" name="TenDM" id="TenDM" class="form-control"
+                value="<?= htmlspecialchars($TenDM ?? '') ?>">
+            <span class="text-danger"><?= $errors['TenDM'] ?? '' ?></span>
         </div>
 
-        
-        <!-- nút lưu -->
-        <div class="form-group row text-center">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="LƯU" class="btn btn-luu" style='font-size: 16px;'>
-            </div>
+        <div class="button-group">
+            <button type="submit" class="btn-luu"><b><i class="fas fa-save"></i> &ensp;LƯU THAY ĐỔI</b></button>
+            <a href="QL_NDM.php" class="btn-th"><b><i class="fas fa-arrow-left"></i> &ensp; TRỞ VỀ</b></a>
         </div>
     </form>
 </div>
-
 <?php
     $content = ob_get_clean();
     include 'Layout_AD.php';
 ?>
+<style>
+    .btn-th, .btn-luu{
+        width: 49%;
+    }
+</style>
