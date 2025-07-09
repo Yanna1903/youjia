@@ -107,6 +107,7 @@ $row = $result->fetch_assoc();
 </div>
 <div class="text-center mt-3" style="text-align:center;">
         <button type="submit" class="btn-luu"><b><i class="fas fa-save"></i> &ensp;LƯU THAY ĐỔI</b></button>
+        <a href="QL_TT.php" class="btn-th"><b><i class="fas fa-arrow-left"></i> &ensp;TRỞ VỀ</b></a>
     </div>
 </body>
 </html>
@@ -129,5 +130,7 @@ include 'Layout_AD.php';
     line-height: 1.5;
     resize: vertical; 
 }
-
+.btn-th, .btn-luu{
+        width: 49%;
+    }
 </style>

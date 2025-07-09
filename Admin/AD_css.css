@@ -7,7 +7,7 @@ html {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
     text-decoration: none;
     list-style: none;   
 }
@@ -87,7 +87,7 @@ h2 , h3 {
     color: #fff;
     text-align: center;
     border-radius: 12px !important;
-    margin: 0; 
+    margin: 2px; 
     transition: 0.3s;
     padding:0 !important;
     border: 0;

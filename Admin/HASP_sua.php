@@ -40,76 +40,71 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['them_hinh'])) {
     }
 }
 
-// Xóa hình chi tiết
-if (isset($_GET['delete_img'])) {
-    $id = (int)$_GET['delete_img'];
-    $res_img = mysqli_query($conn, "SELECT AnhSP FROM HinhAnh WHERE MaHinh='$id'");
-    if ($row = mysqli_fetch_assoc($res_img)) {
-        $file_path = "../images/".$row['AnhSP'];
-        if (file_exists($file_path)) unlink($file_path);
-    }
-    mysqli_query($conn, "DELETE FROM HinhAnh WHERE MaHinh='$id'");
-    echo "<script>alert('Đã xóa hình'); window.location.href='HASP_sua.php?MaSP=$MaSP';</script>";
+// XÓA HÌNH CHI TIẾT NGAY TRONG FILE
+if (isset($_GET['del']) && $_GET['del']) {
+    $AnhSP = mysqli_real_escape_string($conn, $_GET['del']);
+
+    // Xóa file vật lý
+    $path = "../images/" . $AnhSP;
+    if (file_exists($path)) unlink($path);
+
+    // Xóa record DB
+    mysqli_query($conn, "DELETE FROM HinhAnh WHERE MaSP='$MaSP' AND AnhSP='$AnhSP'");
+
+    echo "<script>alert('Đã xóa hình chi tiết'); window.location.href='HASP_sua.php?MaSP=$MaSP';</script>";
+    exit;
 }
 
+// Lấy danh sách hình chi tiết
 $result_img = mysqli_query($conn, "SELECT * FROM HinhAnh WHERE MaSP = '$MaSP'");
 ?>
-    <h2 class="text-center mb-4"> HÌNH ẢNH SẢN PHẨM <?= htmlspecialchars($sp['TenSP']) ?> (<?= htmlspecialchars($sp['MaSP']) ?>)</h2>
-    <hr>
-    <div class='container-images'>
-        <div class="cover-image">
-            <h3 class="text-center mb-3"><b>1. ẢNH BÌA</b></h3> 
-            <form method="post" enctype="multipart/form-data" class="mt-3 text-center">
-                <input type="file" name="AnhBia" class="form-control mb-2" style="width:250px;">
-                <button type="submit" name="capnhat_bia" class="btn-th">Cập nhật ảnh bìa</button>
-            </form>
-            <?php if (!empty($sp['AnhBia'])): ?>
-                <img src="../images/<?= htmlspecialchars($sp['AnhBia']) ?>" alt="Ảnh bìa">
-            <?php else: ?>
-                <p>Chưa có ảnh bìa.</p>
-            <?php endif; ?>
-        </div>
-        <div class="gallery-images">
-            <hr><h3 class="text-center mb-3"><b>2. HÌNH CHI TIẾT</b></h3>
-            <form method="post" enctype="multipart/form-data" class="text-center mb-3" style="width:100%;">
-                <input type="file" name="AnhSP" class="form-control mb-2" style="width:250px;">
-                <button type="submit" name="them_hinh" class="btn-th">Thêm hình chi tiết</button>
-            </form>
 
-            <?php if(mysqli_num_rows($result_img) > 0): ?>
-                <?php while($row_img = mysqli_fetch_assoc($result_img)): ?>
-                    <div>
-                        <img src="../images/<?= htmlspecialchars($row_img['AnhSP']) ?>" alt="Hình SP">
-                        <br>
-                        <a href="HASP_sua.php?MaSP=<?= $MaSP ?>&delete_img=<?= $row_img['MaHinh'] ?>"
-                           onclick="return confirm('Bạn có chắc muốn xóa hình này?');">Xóa</a>
-                    </div>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <p style="width:100%;">Chưa có hình chi tiết.</p>
-            <?php endif; ?>
-        </div>
+<h2 class="text-center mb-4"><B> HÌNH ẢNH SẢN PHẨM <?= htmlspecialchars($sp['TenSP']) ?> (<?= htmlspecialchars($sp['MaSP']) ?>)</B></h2>
+<hr>
+<div class='container-images'>
+    <div class="cover-image">
+        <h3 class="text-center mb-3"><b>1. ẢNH BÌA</b></h3> 
+        <form method="post" enctype="multipart/form-data" class="mt-3 text-center">
+            <input type="file" name="AnhBia" class="form-control mb-2" style="width:250px;">
+            <button type="submit" name="capnhat_bia" class="btn-th">Cập nhật ảnh bìa</button>
+        </form>
+        <?php if (!empty($sp['AnhBia'])): ?>
+            <img src="../images/<?= htmlspecialchars($sp['AnhBia']) ?>" alt="Ảnh bìa">
+        <?php else: ?>
+            <p>Chưa có ảnh bìa.</p>
+        <?php endif; ?>
+    </div>
+    <div class="gallery-images">
+        <hr><h3 class="text-center mb-3"><b>2. HÌNH CHI TIẾT</b></h3>
+        <form method="post" enctype="multipart/form-data" class="text-center mb-3" style="width:100%;">
+            <input type="file" name="AnhSP" class="form-control mb-2" style="width:250px;">
+            <button type="submit" name="them_hinh" class="btn-th">Thêm hình chi tiết</button>
+        </form>
+
+        <?php if(mysqli_num_rows($result_img) > 0): ?>
+            <?php while($row_img = mysqli_fetch_assoc($result_img)): ?>
+                <div>
+                    <img src="../images/<?= htmlspecialchars($row_img['AnhSP']) ?>" alt="Hình SP">
+                    <br>
+                    <a href="?MaSP=<?= $MaSP ?>&del=<?= urlencode($row_img['AnhSP']) ?>"
+                       onclick="return confirm('Bạn có chắc muốn xóa hình này?');">Xóa</a>
+                </div>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <p style="width:100%;">Chưa có hình chi tiết.</p>
+        <?php endif; ?>
     </div>
 </div>
-
+<link rel="stylesheet" href="AD_css.css"> 
 <style>
-    .container-images {
-        align-content:left;
-    }
-    h3, form{
+    .container-images h3, .container-images form{
         text-align: left;
         padding-left: 50px;
     }
-    .cover-image{
-        align-items: left;
-    }
-    .cover-image,
-    .gallery-images {
+    .cover-image, .gallery-images {
         flex: 1;
-        align-content:left;
     }
-    .cover-image img,
-    .gallery-images img {
+    .cover-image img, .gallery-images img {
         height: 400px;
         width:300px;
         border-radius: 10px;
@@ -121,16 +116,7 @@ $result_img = mysqli_query($conn, "SELECT * FROM HinhAnh WHERE MaSP = '$MaSP'");
         flex-wrap: wrap;
         gap: 15px;
     }
-    .gallery-images div {
-        text-align: center;
-    }
-    .gallery-images img {
-        height: 400px;
-        width:300px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        transition: transform 0.3s;
-    }
+    .gallery-images div { text-align: center; }
     .gallery-images a {
         display: inline-block;
         padding: 5px 10px;
@@ -141,13 +127,8 @@ $result_img = mysqli_query($conn, "SELECT * FROM HinhAnh WHERE MaSP = '$MaSP'");
         text-decoration: none;
         width:100%;
     }
-    .gallery-images a:hover {
-        background: #c82333;
-    }
-    .btn-th {
-        width: 50%;
-        border:0;
-    }
+    .gallery-images a:hover { background: #c82333; }
+    .btn-th { width: 50%; border:0; }
 </style>
 <?php
 $content = ob_get_clean();

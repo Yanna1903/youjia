@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <div class="button-group">
-        <button type="submit" class="btn-luu"><b><i class="fas fa-save"></i>&ensp;LƯU</b></button>
+        <button type="submit" class="btn-luu"><b><i class="fas fa-save"></i>&ensp;LƯU THAY ĐỔI</b></button>
         <a href="QL_SP.php" class="btn-th"><b>TRỞ VỀ</b></a>
     </div>
 </form>

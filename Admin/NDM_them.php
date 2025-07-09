@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>        
             <div class="button-group">
                 <button type="submit" class="btn-luu"><b><i class="fas fa-save"></i> &ensp;LƯU THAY ĐỔI</b></button>
-                <a href="QL_NDM.php" class="btn-th"><b>TRỞ VỀ</b></a>
+                <a href="QL_NDM.php" class="btn-th"><b><i class="fas fa-arrow-left"></i> &ensp;TRỞ VỀ</b></a>
             </div>
         </form>
 </div>
@@ -57,4 +57,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     .btn-th, .btn-luu{
         width: 49%;
     }
+    
 </style>
