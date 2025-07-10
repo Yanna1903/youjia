@@ -1,22 +1,31 @@
 html {
-    font-family: sans-serif;
+    font-family: 'Arial', sans-serif !important;
     -webkit-text-size-adjust: 100%;
         -ms-text-size-adjust: 100%;
-  }
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-    text-decoration: none;
-    list-style: none;   
 }
-body{
-    background-color: #ffffff;
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+text-decoration: none;
+list-style: none;   
+}
+body, p, div, span, td, th, li, h1, h2, h3, h4, h5, h6, a {
+    font-family: 'Arial', sans-serif !important;
+    /* background-color: none; */
 }    
+/* Bổ sung đoạn này vào cuối CSS */
+i.fas, i.far, i.fab {
+    font-family: 'Font Awesome 6 Free' !important;
+    font-weight: 900;
+}
+.fab {
+    font-family: 'Font Awesome 6 Brands' !important;
+}
+
 .sidebar {
     height: 100%;
-    width: 350px;
+    width: 350px !important;
     position: fixed;
     top: 0;
     left: 0;
@@ -295,3 +304,4 @@ input[type="submit"]:hover {
     cursor: pointer;
     border: none;
 }
+

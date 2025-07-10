@@ -13,7 +13,8 @@ ob_start();
 ?>
 <div class="sidebar">
   <h1><B>YOUJIA</B></h1>
-  <a href="QL_TT.php" class="<?= isActive('QL_TT.php') ?>">QL THÔNG TIN DOANH NGHIỆP</a>
+  <a href="QL_TT.php" class="<?= isActive('QL_TT.php') ?>">THÔNG TIN DOANH NGHIỆP</a>
+  <a href="QL_Banner.php" class="<?= isActive('QL_Banner.php') ?>">QUẢN LÝ BANNER</a>
   <a href="QL_NDM.php" class="<?= isActive('QL_NDM.php') ?>">QUẢN LÝ NHÓM DANH MỤC</a>
   <a href="QL_DM.php" class="<?= isActive('QL_DM.php') ?>">QUẢN LÝ DANH MỤC</a>
   <a href="QL_SP.php" class="<?= isActive('QL_SP.php') ?>">QUẢN LÝ SẢN PHẨM</a>

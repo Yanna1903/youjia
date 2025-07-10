@@ -39,8 +39,8 @@
                     <?= htmlspecialchars($row['TenNDM']) ?> <!-- Hiển thị giá trị chuỗi của Phái -->
                 </td>
                 <td class="text-center">
-                    <a href="DM_sua.php?id=<?= htmlspecialchars($row['MaDM']) ?>" class="btn btn-th"><i class="fas fa-edit"></i></a>
-                    <a href="DM_xoa.php?id=<?= htmlspecialchars($row['MaDM']) ?>" class="btn btn-th"><i class="fas fa-trash-alt"></i></a>
+                    <a href="DM_sua.php?id=<?= htmlspecialchars($row['MaDM']) ?>" class="btn-th"><i class="fas fa-edit"></i></a>
+                    <a href="DM_xoa.php?id=<?= htmlspecialchars($row['MaDM']) ?>" class="btn-th"><i class="fas fa-trash-can"></i></a>
                 </td>
             </tr>
             <?php } ?>
@@ -50,10 +50,8 @@
         echo '<p class="text-center">Không có danh mục nào.</p>';
     }
 
-    // Đóng kết nối cơ sở dữ liệu
     $conn->close();
 
-    // Lưu nội dung vào biến $content và chèn vào layout
     $content = ob_get_clean();
     include 'Layout_AD.php';
     ?>
