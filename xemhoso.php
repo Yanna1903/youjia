@@ -2,6 +2,7 @@
 session_start();
 ob_start();
 include 'includes/youjia_connect.php';
+include 'includes/header.php';
 
 // Kiểm tra nếu người dùng chưa đăng nhập thì chuyển hướng về trang đăng nhập
 if (!isset($_SESSION['username'])) {
@@ -28,6 +29,8 @@ if (mysqli_num_rows($res_user) > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông tin</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+
     <style>
 /* === TRANG HỒ SƠ NGƯỜI DÙNG === */
 .container-ahihi {
@@ -77,9 +80,12 @@ hr {
     height: 3px !important;
     background-color:rgba(60, 133, 149, 0.31); 
     margin: 20px 10px; 
+    width: 100%;
 }
-
-    </style>
+.btn-success {
+    width: 100%;
+}
+</style>
 </head>
 <body>
 
@@ -116,8 +122,7 @@ hr {
 </div>
 
 <?php
-$content = ob_get_clean();
-include 'includes/youjia_layout.php';
+include 'includes/footer.php';
 ?>
 </body>
 </html>

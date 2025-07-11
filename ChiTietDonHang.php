@@ -2,6 +2,7 @@
 session_start();
 ob_start();
 include "includes/youjia_connect.php";
+include "includes/header.php";
 
 if (!isset($_SESSION['username'])) {
     echo "<script>
@@ -55,6 +56,7 @@ while ($row = $res_ct->fetch_assoc()) {
 }
 $stmt_ct->close();
 ?>
+    <link rel="stylesheet" href="css/bootstrap.css">
 
 <style>
 /* === ORDER DETAIL PAGE === */
@@ -259,6 +261,5 @@ hr{
 
 <?php 
 $conn->close(); 
-$content = ob_get_clean();
-include "includes/youjia_layout.php"; 
+include "includes/footer.php"; 
 ?>

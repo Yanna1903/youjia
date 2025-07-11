@@ -245,7 +245,9 @@ $row = mysqli_fetch_assoc($result);
     </style>
 </head>
 <body>
-
+<?php
+include "includes/header.php";
+?>
 
 <div class="container about-page">
 
@@ -254,7 +256,7 @@ $row = mysqli_fetch_assoc($result);
   <hr>
   <div class="row">
     <div class="col-md-6">
-      <img src="images/logo.jpg" alt="YOUJIA Banner" class="img-responsive img-rounded">
+      <img src="images/Logo/logo.jpg" alt="YOUJIA Banner" class="img-responsive img-rounded">
     </div>
     <div class="col-md-6">
       <p style="padding-left: 30px;">
@@ -410,9 +412,7 @@ $row = mysqli_fetch_assoc($result);
       border: 1px rgb(28, 98, 114);
       color: white !important;
   }
-
 </style>
-<?php
-$content = ob_get_clean();
-include "includes/youjia_layout.php";
-?>
+ <?php 
+ include "includes/footer.php";
+ ?>

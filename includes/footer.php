@@ -10,6 +10,7 @@ $row = mysqli_fetch_assoc($result);
 <style>  
 
   .footer-container {
+    width:100%;
     background-color: #285560;
     /* border-radius: 12px; */
     padding: -50px;

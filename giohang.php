@@ -1,8 +1,10 @@
 <?php
 session_start();
 include "includes/youjia_connect.php";     
+include "includes/header.php";     
 ?>
- 
+    <link rel="stylesheet" href="css/bootstrap.css">
+
 <br> <br>
 <h2 class="text-center"><b>GIỎ HÀNG</b></h2>
 <hr>
@@ -61,20 +63,20 @@ include "includes/youjia_connect.php";
             </tbody>
         </table>
     </form>
-
+    <br> <br><br> <br>
 <?php } else { ?>
     <h2 class="text-center"> ----------------------- Giỏ hàng trống ----------------------- <h2>
     <br>
     <div class="text-center">
         <a href='index.php' class="btn btn-a"> Quay về</a>
         <br> <br>
-        <br> <br>
     </div>
 </div>
+
 <?php } 
-$content = ob_get_clean();
-include 'includes/youjia_layout.php';
+include 'includes/footer.php';
 ?>
+
 <style>
    /* Bảng giỏ hàng */
    table {

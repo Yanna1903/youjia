@@ -4,13 +4,11 @@
 <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
 <title>YOUJIA - CHUYÊN SỈ LẺ NỘI ĐỊA TRUNG</title>
 
-<!-- Tải Bootstrap từ CDN -->
 <link rel="stylesheet" href="css/bootstrap.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-<style type="text/css">
-  .imgbook {
+<style>
+   .imgbook {
     transition: all 1s ease-in;
     width: 100%;                  
     max-width: 400px;             
@@ -55,15 +53,17 @@
   .search-form {
     justify-content: center;
     align-items: center;
-    width: 100%;
-    margin: 30px 50px;
-    margin-left: 0;
+    width: 1150px !important;
+    margin: 0;
+    padding-left:5px;
   }
   .search-form .form-control {
     border-radius: 20px 0 0 20px;
     height: 45px;
-    width: 100%;
+    width: 100% !important;
     border: 1px solid rgb(255, 119, 23);
+    margin-left:2PX;
+    padding: 10px 15px;
   }
   .search-form .form-control:focus {
     outline: none !important;
@@ -77,52 +77,42 @@
     background-color: rgb(255, 119, 23);
     color: white;
     border: 2.5px solid rgb(255, 119, 23);
+    border-left: 5px solid rgb(255, 119, 23);
+    margin-right: 10px;
   }
   .search-form .btn:hover,  .search-form .btn:focus {
     background-color: rgb(228, 95, 0) !important ;
     border-color: rgb(228, 95, 0);
   }
 </style>
-
+</style>
 </head>
 <body>
 <?php
     include 'includes/youjia_connect.php';
-    include "header.php";                   
+    include "header.php";      
+    include "slider.php";
 ?>
-<div class="container">
-  <!-- <div class="row" style="margin: 20px 0;">
-    <div class="col-md-12">
-      <form class="search-form" action="timkiem.php" method="GET">
-        <div class="input-group">
-          <input type="text" name="query" class="form-control input-lg" placeholder="Tìm sản phẩm..." required>
-          <span class="input-group-btn">
-            <button class="btn btn-lg btn-info" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-          </span>
-        </div>
-      </form>
-    </div>
-  </div> -->
-  <div class="row">
-    <div class="container mt-4">
-    <!-- ds quần áo -->
-      <?php echo $content; ?>  
-    </div>
+
+<div class="center container">
+  <div class="center row mt-4">
+      <div class="col-12">
+          <?php echo $content; ?>  
+      </div>
   </div>
 </div>
 
 <?php
-    // include "quanaobannhieu.php";  
-    include "footer.php";         //footer
+    include "footer.php";
 ?>
-<!-- <?php include 'chatbox.php'; ?> -->
+
 <a
     id="zalo-chat-btn"
     href="https://zalo.me/0976215508"
     target="_blank"
     rel="noopener noreferrer"
     title="Chat Zalo với chúng tôi"
-  >
+>
     <img src="images/Logo/Icon_of_Zalo.jpg" alt="Zalo" />
     Chat Zalo
 </a>

@@ -39,22 +39,43 @@ if (!$result) {
 }
 ?>
 <style>
-input.form-control {
-    border: 1px solid #56a3a6;
-    background-color: #f0fdfc;
-    color: #056c6c;
-    font-weight: bold;
-}
-input.form-control::placeholder {
-    color: #289f9d;
-}
-input.form-control:focus {
-    border-color: #289f9d;
-    box-shadow: 0 0 5px rgba(40, 159, 157, 0.5);
-}
-.btn-tim, .btn-them {
-    width: 15%;
-}
+    .form-inline.search-bar {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .form-inline.search-bar input.form-control {
+        width: 100%;
+    }
+    .form-inline.search-bar button {
+        white-space: nowrap;
+        width: 10%;
+    }
+    input.form-control {
+        border: 0.5px solid rgba(255, 120, 23, 0.58) !important; /* viền cam */
+        background-color: #fffbe6; /* nền vàng nhạt */
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: 0.3s;
+        color: rgb(255, 106, 0) !important; 
+        font-weight: bold;
+    }
+
+    input.form-control::placeholder {
+        color: rgb(255, 106, 0) !important; /* placeholder cam đậm */
+    }
+
+    input.form-control:focus {
+        border-color: rgb(255, 106, 0) !important;
+        box-shadow: 0 0 5px rgba(255, 186, 136, 0.77) !important;
+        outline: rgb(255, 185, 136) !important;
+    }
+    .btn-tim, .btn-them {
+        width: 15%;
+    }
 </style>
 
 <div class="thongtin">
@@ -63,7 +84,6 @@ input.form-control:focus {
     <form method="get" class="form-inline search-bar mb-3">
         <input type="text" name="query" class="form-control" placeholder="Tìm mã ĐH, tên KH, số điện thoại..." value="<?= htmlspecialchars($keyword) ?>">
         <button type="submit" class="btn-luu btn-tim"><i class="fas fa-search"></i></button>
-        <a href="DH_them.php" class="btn-th btn-them"><i class="fas fa-plus"></i><b>&ensp;Thêm</b></a>
     </form>
 
     <?php if (mysqli_num_rows($result) > 0): ?>

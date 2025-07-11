@@ -2,6 +2,7 @@
 ob_start();
 session_start();
 include "includes/youjia_connect.php";
+include "includes/header.php";
 if (!isset($_SESSION['username'])) {
     echo "<script>alert('Vui lòng đăng nhập để xem đơn hàng.'); window.location.href='dangnhap.php';</script>";
     exit;
@@ -22,6 +23,8 @@ $stmt->bind_param("i", $MaKH);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
+    <link rel="stylesheet" href="css/bootstrap.css">
+
 <div class="order-container mt-5">
     <h2 class="text-center">ĐƠN HÀNG CỦA BẠN</h2>
     <hr>
@@ -76,9 +79,7 @@ $result = $stmt->get_result();
     </div>
     </div>
 <?php 
-$content = ob_get_clean();
-include "includes/youjia_layout.php"; ?>
-
+include "includes/footer.php"; ?>
 
 <style>
 /* === Đồng bộ tone với Header/Footer === */
