@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($result) {
             echo "<script>
-                    alert('Thêm mới khách hàng thành công!');
+                    alert('✅ THÊM THÀNH CÔNG!');
                     window.location.href = 'QL_KH.php';
                   </script>";
             exit(); 

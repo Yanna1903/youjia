@@ -44,7 +44,7 @@ if (isset($_GET['id'])) {
 
             if ($result_update) {
                 echo "<script>
-                        alert('Cập nhật thành công!');
+                        alert('✅ CẬP NHẬT THÀNH CÔNG!');
                         window.location.href = 'QL_KH.php';
                       </script>";
             } else {

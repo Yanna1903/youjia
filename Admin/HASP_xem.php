@@ -48,7 +48,7 @@ $result_img = $stmt_img->get_result();
                 while($row_img = $result_img->fetch_assoc()): ?>
                     <img src="../images/<?= htmlspecialchars($row_img['AnhSP']) ?>" alt="Ảnh SP">
             <?php endwhile; else: ?>
-                <p>Không có hình ảnh cho sản phẩm này.</p>
+                <p>❌ Không có hình ảnh cho sản phẩm này.</p>
             <?php endif; ?>
         </div>
     </div>

@@ -390,11 +390,7 @@ $row = mysqli_fetch_assoc($result);
       </div>
     </div>
   </div>
-
-
   <hr><br>
-
-
   <!-- NÚT TRANG CHỦ -->
   <div class="text-center">
     <a href="index.php" class="btn btn-success">

@@ -18,13 +18,13 @@ $result = mysqli_query($conn, $sql);
     <tbody>
         <?php while ($row = mysqli_fetch_assoc($result)) { ?>
             <tr>
-                <td><img src="../images/<?php echo $row['Banner']; ?>" width="120"></td>
+                <td><img src="../images/slider/<?php echo $row['Banner']; ?>" width="120"></td>
                 <td><?php echo htmlspecialchars($row['TieuDe']); ?></td>
                 <td><?php echo htmlspecialchars($row['Link']); ?></td>
                 <td><?php echo $row['NgayGio']; ?></td>
-                <td>
-                    <a href="AD_banner_sua.php?id=<?php echo $row['MaBN']; ?>" class="btn btn-warning btn-sm">Sửa</a>
-                    <a href="AD_banner_xoa.php?id=<?php echo $row['MaBN']; ?>" onclick="return confirm('Xóa banner này?');" class="btn btn-danger btn-sm">Xóa</a>
+                <td class="text-center">
+                    <a href="BN_sua.php?id=<?= htmlspecialchars($row['MaBN']) ?>" class="btn-th"><i class="fas fa-edit"></i></a>
+                    <a href="BN_xoa.php?id=<?= htmlspecialchars($row['MaBN']) ?>" class="btn-th"><i class="fas fa-trash-can"></i></a>
                 </td>
             </tr>
         <?php } ?>

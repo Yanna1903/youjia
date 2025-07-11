@@ -16,7 +16,7 @@
 ?>
 
 <div class="thongtin">
-    <h2 class="text-center mb-4"><b>DANH SÁCH DANH MỤC</b></h2>
+    <h2><b>DANH SÁCH DANH MỤC</b></h2>
     <hr>
     <h3><a href="DM_them.php" style="font-style: italic; text-decoration: underline;color:rgb(255, 119, 23)">Thêm danh mục mới</a></h3>
 

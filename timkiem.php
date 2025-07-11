@@ -6,21 +6,17 @@ include 'includes/youjia_connect.php';
 // Lấy từ khóa tìm kiếm từ GET
 $key = isset($_GET['query']) ? trim($_GET['query']) : '';
 $key_safe = mysqli_real_escape_string($conn, $key);
-
-// Lấy trang hiện tại
 $trang = isset($_GET['trang']) ? intval($_GET['trang']) : 1;
 if ($trang < 1) $trang = 1;
 
-// Tổng số sản phẩm khớp kết quả tìm kiếm
 $sql_count = "SELECT COUNT(*) AS tong FROM sanpham WHERE MaSP LIKE '%$key_safe%' OR TenSP LIKE '%$key_safe%'";
 $tong = mysqli_fetch_assoc(mysqli_query($conn, $sql_count))['tong'];
 
-// Cấu hình phân trang
+// PHÂN TRANG
 $spMoiTrang = 10;
 $tongTrang = ceil($tong / $spMoiTrang);
 $offset = ($trang - 1) * $spMoiTrang;
 
-// Truy vấn sản phẩm khớp
 $sql = "SELECT MaSP, TenSP, AnhBia, GiaBan 
         FROM sanpham 
         WHERE MaSP LIKE '%$key_safe%' OR TenSP LIKE '%$key_safe%'

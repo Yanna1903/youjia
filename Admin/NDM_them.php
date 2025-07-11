@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($result) {
             echo "<script>
-                    alert('Thêm thương hiệu thành công!');
+                    alert('✅ THÊM THÀNH CÔNG!');
                     window.location.href = 'QL_NDM.php';
                   </script>";
         } else {

@@ -8,15 +8,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($file['error'] === 0) {
         $filename = time() . '_' . basename($file['name']);
-        move_uploaded_file($file['tmp_name'], '../images/' . $filename);
+        move_uploaded_file($file['tmp_name'], '../images/slider/' . $filename);
         $sql = "INSERT INTO banner (Banner, TieuDe, Link) VALUES ('$filename', '$tieude', '$link')";
         mysqli_query($conn, $sql);
-        header("Location: AD_banner.php");
+
+        // Gửi alert và redirect qua JavaScript
+        echo "<script>
+                alert('✅ THÊM THÀNH CÔNG!');
+                window.location.href = 'QL_Banner.php';
+              </script>";
+        exit;
+    } else {
+        echo "<script>
+                alert('⚠️ Lỗi khi tải hình banner!');
+                window.history.back();
+              </script>";
         exit;
     }
 }
 ?>
-<h3>Thêm Banner</h3>
+
+<h3>THÊM BANNER MỚI</h3>
 <hr>
 <form method="POST" enctype="multipart/form-data">
     <div class="form-group">
@@ -33,9 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <button type="submit" class="btn-luu">Thêm</button>
 </form>
-<?php
-    $conn->close();
-    $content = ob_get_clean();
-    include 'Layout_AD.php';
-?>
 
+<?php
+$conn->close();
+$content = ob_get_clean();
+include 'Layout_AD.php';
+?>

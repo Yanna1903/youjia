@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($result) {
             echo "<script>
-                    alert('Cập nhật thành công!');
+                    alert('✅ CẬP NHẬT THÀNH CÔNG!');
                     window.location.href = 'QL_DM.php';
                   </script>";
             exit;

@@ -1,64 +1,64 @@
 <?php
-    ob_start();
-    include '../includes/youjia_connect.php';
+ob_start();
+include '../includes/youjia_connect.php';
 
-    $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$maNDM = $_GET['id'] ?? null;
+if (!$maNDM) {
+    echo "<script>alert('Không tìm thấy mã nhóm danh mục'); window.location.href = 'QL_NDM.php';</script>";
+    exit;
+}
 
-    if ($id == 0) {
-        die("Thương hiệu không tồn tại.");
-    }
+// Lấy dữ liệu cũ
+$sql = "SELECT * FROM nhomdanhmuc WHERE MaNDM = ?";
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "i", $maNDM);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$row = mysqli_fetch_assoc($result);
 
-    // Lấy thông tin thương hiệu từ DB
-    $sql = "SELECT * FROM NhomDanhMuc WHERE MaNDM = $id";
-    $result = mysqli_query($conn, $sql);
-    $brand = mysqli_fetch_assoc($result);
+if (!$row) {
+    echo "<script>alert('Không tìm thấy dữ liệu!'); window.location.href = 'QL_NDM.php';</script>";
+    exit;
+}
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $tenNDM = $_POST['TenNDM'];
+// Xử lý cập nhật
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $tenNDM = trim($_POST['TenNDM']);
 
-        // Cập nhật
-        $sql_update = "UPDATE NhomDanhMuc 
-                       SET TenNDM = '$tenNDM'
-                       WHERE MaNDM = $id";
-
-        if (mysqli_query($conn, $sql_update)) {
-            echo "<script>
-                    alert('Cập nhật thương hiệu thành công!');
-                    window.location.href = 'QL_NDM.php';
-                </script>";
+    if ($tenNDM === "") {
+        echo "<script>alert('Tên nhóm danh mục không được để trống!');</script>";
+    } else {
+        $update_sql = "UPDATE nhomdanhmuc SET TenNDM = ? WHERE MaNDM = ?";
+        $update_stmt = mysqli_prepare($conn, $update_sql);
+        mysqli_stmt_bind_param($update_stmt, "si", $tenNDM, $maNDM);
+        if (mysqli_stmt_execute($update_stmt)) {
+            echo "<script>alert('✅ CẬP NHẬT THÀNH CÔNG!'); window.location.href = 'QL_NDM.php';</script>";
+            exit;
         } else {
-            echo "<div class='alert alert-danger'>Lỗi cập nhật: " . mysqli_error($conn) . "</div>";
+            echo "<script>alert('Cập nhật thất bại!');</script>";
         }
     }
-
-    $conn->close();
+}
 ?>
-<h2 class="text-center mt-4"><b>CẬP NHẬT NHÓM DANH MỤC</b></h2>
-<hr style="width:50%;">
 
+<h2 class="text-center"><b>CẬP NHẬT NHÓM DANH MỤC</b></h2><hr>
 <div class="thongtin">
-    <form method="POST" class="form-container" style="background:#f9f9f9; border-radius:12px;">
-        <input type="hidden" name="MaDM" value="<?= htmlspecialchars($MaDM ?? '') ?>">
-
+    <form method="POST" class="form-container" style="background:#f9f9f9; border-radius:12px; padding: 20px;">
         <div class="form-group">
-            <label for="TenDM" class="form-label">Tên NDM</label>
-            <input type="text" name="TenDM" id="TenDM" class="form-control"
-                value="<?= htmlspecialchars($TenDM ?? '') ?>">
-            <span class="text-danger"><?= $errors['TenDM'] ?? '' ?></span>
+            <label>Tên nhóm danh mục</label>
+            <input type="text" name="TenNDM" class="form-control" value="<?= htmlspecialchars($row['TenNDM']) ?>" required>
         </div>
-
-        <div class="button-group">
-            <button type="submit" class="btn-luu"><b><i class="fas fa-save"></i> &ensp;LƯU THAY ĐỔI</b></button>
-            <a href="QL_NDM.php" class="btn-th"><b><i class="fas fa-arrow-left"></i> &ensp; TRỞ VỀ</b></a>
+        <div class="button-group mt-3">
+            <button type="submit" class="btn-luu"><b><i class="fas fa-save"></i>&ensp;LƯU THAY ĐỔI</b></button>
+            <a href="QL_NDM.php" class="btn-th"><b><i class="fas fa-arrow-left"></i>&ensp;TRỞ VỀ</b></a>
         </div>
     </form>
 </div>
+
 <?php
-    $content = ob_get_clean();
-    include 'Layout_AD.php';
+$content = ob_get_clean();
+include 'Layout_AD.php';
 ?>
 <style>
-    .btn-th, .btn-luu{
-        width: 49%;
-    }
+    .btn-th, .btn-luu { width: 49%; }
 </style>

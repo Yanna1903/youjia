@@ -19,7 +19,7 @@ if (isset($_GET['MaSP']) && !empty($_GET['MaSP'])) {
 
         if ($result) {
             echo "<script>
-                    alert('Xóa sản phẩm thành công!');
+                alert('✅ XÓA THÀNH CÔNG!');
                     window.location.href = 'QL_SP.php';
                  </script>";
         } else {
@@ -32,7 +32,7 @@ if (isset($_GET['MaSP']) && !empty($_GET['MaSP'])) {
         mysqli_stmt_close($stmt);
     } else {
         echo "<script>
-                alert('Không tìm thấy sản phẩm để xóa!');
+                alert('❌ KHÔNG TÌM THẤY MÃ SẢN PHẨM!');
                 window.location.href = 'QL_SP.php';
              </script>";
     }

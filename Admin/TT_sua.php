@@ -40,16 +40,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt->execute()) {
             echo "<script>
-                    alert('Cập nhật thành công!');
+                    alert('✅ CẬP NHẬT THÀNH CÔNG!');
                     window.location.href = 'QL_TT.php';
                 </script>";
         } else {
-            echo "<script>alert('Lỗi khi cập nhật dữ liệu!');</script>";
+            echo "<script>alert('⚠️ Lỗi khi cập nhật dữ liệu!');</script>";
         }
 
         $stmt->close();
     } else {
-        echo "<script>alert('Lỗi truy vấn: " . $conn->error . "');</script>";
+        echo "<script>alert('⚠️ Lỗi truy vấn: " . $conn->error . "');</script>";
     }
 }
 
@@ -101,14 +101,15 @@ $row = $result->fetch_assoc();
                 <tr><td>Giờ hoạt động</td><td><input type="text" name="GioHoatDong" value="<?= htmlspecialchars($row['GioHoatDong'] ?? '') ?>"></td></tr>
                 <tr><td>Slogan</td><td><textarea name="Slogan"><?= htmlspecialchars($row['Slogan'] ?? '') ?></textarea></td></tr>
             </tbody>
-        </table>
+        </table> <BR>
+        <div class="text-center mt-3" style="text-align:center;">
+            <button type="submit" class="btn-luu"><b><i class="fas fa-save"></i> &ensp;LƯU THAY ĐỔI</b></button>
+            <a href="QL_TT.php" class="btn-th"><b><i class="fas fa-arrow-left"></i> &ensp;TRỞ VỀ</b></a>
+        </div>
+
     </form>
     <br>
 </div>
-<div class="text-center mt-3" style="text-align:center;">
-        <button type="submit" class="btn-luu"><b><i class="fas fa-save"></i> &ensp;LƯU THAY ĐỔI</b></button>
-        <a href="QL_TT.php" class="btn-th"><b><i class="fas fa-arrow-left"></i> &ensp;TRỞ VỀ</b></a>
-    </div>
 </body>
 </html>
 <?php

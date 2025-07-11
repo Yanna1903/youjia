@@ -14,12 +14,15 @@ $sp = mysqli_fetch_assoc($result_sp);
 // Cập nhật ảnh bìa
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['capnhat_bia'])) {
     if ($_FILES['AnhBia']['name']) {
-        $file_name = uniqid() . "_" . basename($_FILES["AnhBia"]["name"]);
+        $new_name = uniqid() . "_" . basename($_FILES["AnhBia"]["name"]);
+        $file_name = "AnhBia/" . $new_name;
         $target_dir = "../images/";
         $target_file = $target_dir . $file_name;
 
         if (move_uploaded_file($_FILES["AnhBia"]["tmp_name"], $target_file)) {
-            if (!empty($sp['AnhBia']) && file_exists($target_dir.$sp['AnhBia'])) unlink($target_dir.$sp['AnhBia']);
+            if (!empty($sp['AnhBia']) && file_exists($target_dir . $sp['AnhBia'])) {
+                unlink($target_dir . $sp['AnhBia']);
+            }
             mysqli_query($conn, "UPDATE SanPham SET AnhBia='$file_name' WHERE MaSP='$MaSP'");
             echo "<script>alert('Cập nhật ảnh bìa thành công'); window.location.href='HASP_sua.php?MaSP=$MaSP';</script>";
         }
@@ -29,7 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['capnhat_bia'])) {
 // Thêm hình chi tiết
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['them_hinh'])) {
     if ($_FILES['AnhSP']['name']) {
-        $file_name = uniqid() . "_" . basename($_FILES["AnhSP"]["name"]);
+        $new_name = uniqid() . "_" . basename($_FILES["AnhSP"]["name"]);
+        $file_name = "AnhBia/" . $new_name;
         $target_dir = "../images/";
         $target_file = $target_dir . $file_name;
 
@@ -40,17 +44,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['them_hinh'])) {
     }
 }
 
-// XÓA HÌNH CHI TIẾT NGAY TRONG FILE
+// XÓA HÌNH CHI TIẾT
 if (isset($_GET['del']) && $_GET['del']) {
     $AnhSP = mysqli_real_escape_string($conn, $_GET['del']);
-
-    // Xóa file vật lý
     $path = "../images/" . $AnhSP;
     if (file_exists($path)) unlink($path);
 
-    // Xóa record DB
     mysqli_query($conn, "DELETE FROM HinhAnh WHERE MaSP='$MaSP' AND AnhSP='$AnhSP'");
-
     echo "<script>alert('Đã xóa hình chi tiết'); window.location.href='HASP_sua.php?MaSP=$MaSP';</script>";
     exit;
 }
@@ -87,17 +87,18 @@ $result_img = mysqli_query($conn, "SELECT * FROM HinhAnh WHERE MaSP = '$MaSP'");
                     <img src="../images/<?= htmlspecialchars($row_img['AnhSP']) ?>" alt="Hình SP">
                     <br>
                     <a href="?MaSP=<?= $MaSP ?>&del=<?= urlencode($row_img['AnhSP']) ?>"
-                       onclick="return confirm('Bạn có chắc muốn xóa hình này?');">Xóa</a>
+                       onclick="return confirm('❓Bạn có chắc muốn xóa hình này?');">Xóa</a>
                 </div>
             <?php endwhile; ?>
         <?php else: ?>
-            <p style="width:100%;">Chưa có hình chi tiết.</p>
+            <p style="width:100%;">❌ Chưa có hình chi tiết.</p>
         <?php endif; ?>
     </div>
 </div>
+
 <link rel="stylesheet" href="AD_css.css"> 
 <style>
-    .container-images h3, .container-images form{
+    .container-images h3, .container-images form {
         text-align: left;
         padding-left: 50px;
     }
@@ -106,7 +107,7 @@ $result_img = mysqli_query($conn, "SELECT * FROM HinhAnh WHERE MaSP = '$MaSP'");
     }
     .cover-image img, .gallery-images img {
         height: 400px;
-        width:300px;
+        width: 300px;
         border-radius: 10px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         margin-top: 10px;
@@ -116,7 +117,9 @@ $result_img = mysqli_query($conn, "SELECT * FROM HinhAnh WHERE MaSP = '$MaSP'");
         flex-wrap: wrap;
         gap: 15px;
     }
-    .gallery-images div { text-align: center; }
+    .gallery-images div {
+        text-align: center;
+    }
     .gallery-images a {
         display: inline-block;
         padding: 5px 10px;
@@ -125,11 +128,17 @@ $result_img = mysqli_query($conn, "SELECT * FROM HinhAnh WHERE MaSP = '$MaSP'");
         color: #fff;
         border-radius: 4px;
         text-decoration: none;
-        width:100%;
+        width: 100%;
     }
-    .gallery-images a:hover { background: #c82333; }
-    .btn-th { width: 50%; border:0; }
+    .gallery-images a:hover {
+        background: #c82333;
+    }
+    .btn-th {
+        width: 50%;
+        border: 0;
+    }
 </style>
+
 <?php
 $content = ob_get_clean();
 include 'Layout_AD.php';

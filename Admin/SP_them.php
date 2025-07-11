@@ -13,6 +13,17 @@ $SoLuong = $_POST['SoLuong'] ?? '';
 $MauSac = $_POST['MauSac'] ?? '';
 $TrangThai = isset($_POST['TrangThai']) ? 1 : 0;
 
+// Lấy danh sách nhóm danh mục
+$sql_ndm = "SELECT * FROM nhomdanhmuc";
+$result_ndm = mysqli_query($conn, $sql_ndm);
+
+// Lấy danh sách danh mục nếu có nhóm danh mục được chọn
+$result_dm = [];
+if (!empty($MaNDM)) {
+    $sql_dm = "SELECT * FROM danhmuc WHERE MaNDM = '$MaNDM'";
+    $result_dm = mysqli_query($conn, $sql_dm);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($MaSP)) $errors['MaSP'] = "Mã sản phẩm không được để trống.";
     if (empty($TenSP)) $errors['TenSP'] = "Tên sản phẩm không được để trống.";
@@ -24,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         $AnhBia = $_FILES['AnhBia'] ?? null;
         $file_name = uniqid() . "_" . basename($AnhBia["name"]);
-        $target_dir = "../images/";
+        $target_dir = "../images/AnhBia/";
         $target_file = $target_dir . $file_name;
         $uploadOk = 1;
 
@@ -44,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = mysqli_stmt_execute($stmt);
 
             if ($result) {
-                echo "<script>alert('Thêm sản phẩm thành công!'); window.location.href='QL_SP.php';</script>";
+                echo "<script>alert('✅ THÊM THÀNH CÔNG!'); window.location.href='QL_SP.php';</script>";
                 exit;
             } else {
                 echo "<div class='alert alert-danger'>Lỗi thêm sản phẩm: " . mysqli_error($conn) . "</div>";
@@ -55,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 
 <h2 class="h2-them"><b>THÊM SẢN PHẨM MỚI</b></h2><hr style="width:50%;">
 
@@ -107,10 +119,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="form-group">
         <label>Danh Mục</label>
-        <select name="MaDM" id="MaDM" required>
+        <select name="MaDM" id="MaDM" class="form-control" required>
             <option value="">-- Chọn danh mục --</option>
+            <?php while($dm = mysqli_fetch_assoc($result_dm)): ?>
+                <option value="<?= $dm['MaDM'] ?>" <?= ($dm['MaDM']==$sp['MaDM'])?'selected':'' ?>>
+                    <?= htmlspecialchars($dm['TenDM']) ?>
+                </option>
+            <?php endwhile; ?>
         </select>
-        <span class="text-danger"><?= $errors['MaDM'] ?? '' ?></span>
     </div>
 
     <div class="form-group">
@@ -128,13 +144,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Trạng Thái</label>
         <div style="display:flex; align-items:center; gap:8px;">
             <input type="checkbox" name="TrangThai" <?= $TrangThai ? 'checked' : '' ?>>
-            <span style="font-size:13px;">(Còn hàng)</span>
+            <span style="font-size:16px;">(Còn hàng)</span>
         </div>
     </div>
 
-    <div class="button-group">
-        <button type="submit" class="btn-luu"><b><i class="fas fa-save"></i>&ensp;LƯU THAY ĐỔI</b></button>
-        <a href="QL_SP.php" class="btn-th"><b>TRỞ VỀ</b></a>
+    <div class="button-group" style="margin-top: 20px;">
+        <button type="submit" class="btn-luu"><b><i class="fas fa-save"></i> &ensp;LƯU</b></button>
+        <a href="QL_SP.php" class="btn-th"><b><i class="fas fa-arrow-left"></i> &ensp;TRỞ VỀ</b></a>
     </div>
 </form>
 

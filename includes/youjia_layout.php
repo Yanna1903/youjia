@@ -56,6 +56,8 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+    margin: 30px 50px;
+    margin-left: 0;
   }
   .search-form .form-control {
     border-radius: 20px 0 0 20px;
@@ -89,7 +91,7 @@
     include "header.php";                   
 ?>
 <div class="container">
-  <div class="row" style="margin: 20px 0;">
+  <!-- <div class="row" style="margin: 20px 0;">
     <div class="col-md-12">
       <form class="search-form" action="timkiem.php" method="GET">
         <div class="input-group">
@@ -100,7 +102,7 @@
         </div>
       </form>
     </div>
-  </div>
+  </div> -->
   <div class="row">
     <div class="container mt-4">
     <!-- ds quần áo -->
@@ -121,7 +123,7 @@
     rel="noopener noreferrer"
     title="Chat Zalo với chúng tôi"
   >
-    <img src="images/Icon_of_Zalo.jpg" alt="Zalo" />
+    <img src="images/Logo/Icon_of_Zalo.jpg" alt="Zalo" />
     Chat Zalo
 </a>
 </body>
